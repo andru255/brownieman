@@ -1,0 +1,27 @@
+{
+  "name": "brownieman",
+  "version": "1.0.0",
+  "description": "sweet competence in a maze",
+  "main": "index.js",
+  "scripts": {
+    "start": "rollup -c -w",
+    "build": "rollup -c"
+  },
+  "keywords": [
+    "js13k"
+  ],
+  "author": "andru255",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^15.0.0",
+    "@rollup/plugin-image": "^2.0.5",
+    "@rollup/plugin-node-resolve": "^9.0.0",
+    "@rollup/plugin-typescript": "^5.0.2",
+    "rollup": "^2.26.3",
+    "rollup-plugin-livereload": "^1.3.0",
+    "rollup-plugin-serve": "^1.0.3",
+    "rollup-plugin-terser": "^7.0.0",
+    "tslib": "^2.0.1",
+    "typescript": "^3.9.7"
+  }
+}
