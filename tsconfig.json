@@ -15,11 +15,17 @@
     "baseUrl": ".",
     "rootDir": "./src/",
     "paths": {
+      "@interface/*": [
+        "src/interface/*"
+      ],
       "@abstract/*": [
         "src/abstract/*"
       ],
       "@toolbox/*": [
         "src/toolbox/*"
+      ],
+      "@layer/*": [
+        "src/layer/*"
       ]
     }
   },
