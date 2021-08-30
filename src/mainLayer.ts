@@ -1,7 +1,7 @@
 import Layer from '@abstract/Layer';
 import { GameFeatures } from '@interface/GameFeatures';
-import { rectangleShape } from '@toolbox/Shape';
-import padMobileLayer from '../layer/padMobile';
+import padMobileLayer from '@layer/padMobile';
+import MazeScene from './scene/maze';
 
 export default class MainLayer extends Layer {
     x = 10;
@@ -9,20 +9,25 @@ export default class MainLayer extends Layer {
     width = 20;
     height = 20;
 
+    scenes: Layer[] = [new MazeScene()];
+
+    // TODO: PROGRAM UI
     paddleMobile = new padMobileLayer();
 
     start(gameFeatures: GameFeatures): void {
-        console.log('Great!', gameFeatures);
         gameFeatures.on();
         if (gameFeatures.isMob()) {
             this.paddleMobile.start(gameFeatures);
         }
+        this.scenes.forEach((scene) => scene.start(gameFeatures));
     }
-    update(gameFeatures: GameFeatures): void {}
+    update(gameFeatures: GameFeatures): void {
+        this.scenes.forEach((scene) => scene.update(gameFeatures));
+    }
     render(gameFeatures: GameFeatures): void {
-        rectangleShape(this, gameFeatures);
         if (gameFeatures.isMob()) {
             this.paddleMobile.render(gameFeatures);
         }
+        this.scenes.forEach((scene) => scene.render(gameFeatures));
     }
 }

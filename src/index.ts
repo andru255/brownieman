@@ -1,6 +1,6 @@
-import MainLayer from 'src/scene/main';
 import Config from './Config';
 import Game from './Game';
+import MainLayer from './mainLayer';
 
 export default function $BM() {
     // canvas&wrapper setup
@@ -8,7 +8,6 @@ export default function $BM() {
     const c = <HTMLCanvasElement>document.getElementById('c');
     const L = new MainLayer();
     const game = new Game('c', L);
-    game.setup();
 
     // check resize
     const resizr = (w, h) => {
@@ -32,5 +31,6 @@ export default function $BM() {
         }
     };
     resizr(window.innerWidth, window.innerHeight);
+    game.setup();
     window.addEventListener('resize', () => resizr(window.innerWidth, window.innerHeight), this);
 }
