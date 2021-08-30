@@ -5,24 +5,27 @@ import Config from 'src/Config';
 
 export default class GridLayer extends Layer {
     map: string[][] = [
-        ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
-        ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-        ['X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X'],
-        ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-        ['X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X'],
-        ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-        ['X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X'],
-        ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
-        ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
+        ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
+        ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
+        ['X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X'],
+        ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
+        ['X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X'],
+        ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
+        ['X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X'],
+        ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
+        ['X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X'],
+        ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
+        ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
     ];
 
     layerMap: Layer[] = [];
     start(gameFeatures: GameFeatures): void {
         let cellSize = Config.CELL_SIZE;
+        let padLeft = cellSize;
         this.map.forEach((row, rowIndex) => {
             const y = cellSize * rowIndex + 1;
             let rowLayer = row.map((cell, cellIndex) => {
-                const x = cellSize * cellIndex + 1;
+                const x = padLeft + cellSize * cellIndex + 1;
                 if (cell === 'X') {
                     return <Layer>{
                         width: cellSize,

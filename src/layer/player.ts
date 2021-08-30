@@ -5,47 +5,53 @@ import { rectangleShape } from '@toolbox/Shape';
 import Config from 'src/Config';
 
 export default class PlayerLayer extends Layer {
-    width = Config.CELL_SIZE - 10;
-    height = Config.CELL_SIZE - 10;
-    x = Config.CELL_SIZE + 5;
+    width = Config.CELL_SIZE - Config.CELL_SIZE / 10;
+    height = Config.CELL_SIZE - Config.CELL_SIZE / 10;
+    x = Config.CELL_SIZE * 2 + 5;
     y = Config.CELL_SIZE + 5;
     strokeStyle = '';
     vx = Config.PLAYER_VELOCITY;
     vy = Config.PLAYER_VELOCITY;
-    shared: {
-        isCollided: boolean;
-        isKeyPressed: boolean;
-        direction: KeyName;
-        nextPos: Layer;
-    };
+    fillStyle = 'rgba(136, 160, 240, 0.8)'; // '#88a0f0';
+    //shared
+    isCollided: boolean;
+    isKeyPressed: boolean;
+    direction: KeyName;
+    nextPos: Layer;
+    attack: boolean;
 
     start(gameFeatures: GameFeatures): void {
         this.shared.isCollided = false;
         on(document, 'keyup', (evt) => {
-            this.shared.isKeyPressed = true;
+            this.isKeyPressed = true;
+            this.direction = undefined;
+            console.log('evt.keyCode', evt.keyCode);
             if (evt.keyCode == KeyName.ARROW_RIGHT) {
-                this.shared.direction = KeyName.ARROW_RIGHT;
+                this.direction = KeyName.ARROW_RIGHT;
             }
             if (evt.keyCode == KeyName.ARROW_LEFT) {
-                this.shared.direction = KeyName.ARROW_LEFT;
+                this.direction = KeyName.ARROW_LEFT;
             }
             if (evt.keyCode == KeyName.ARROW_UP) {
-                this.shared.direction = KeyName.ARROW_UP;
+                this.direction = KeyName.ARROW_UP;
             }
             if (evt.keyCode == KeyName.ARROW_DOWN) {
-                this.shared.direction = KeyName.ARROW_DOWN;
+                this.direction = KeyName.ARROW_DOWN;
+            }
+            if (evt.keyCode == KeyName.D) {
+                this.attack = true;
             }
         });
     }
     update(gameFeatures: GameFeatures): void {
-        if (this.shared.nextPos !== undefined) {
-            this.x = this.shared.nextPos.x;
-            this.y = this.shared.nextPos.y;
+        if (this.nextPos !== undefined) {
+            this.x = this.nextPos.x;
+            this.y = this.nextPos.y;
         }
     }
     render(gameFeatures: GameFeatures): void {
-        if (this.shared.nextPos !== undefined) {
-            rectangleShape(this.shared.nextPos, gameFeatures);
+        if (this.nextPos !== undefined) {
+            rectangleShape(this.nextPos, gameFeatures);
         }
         rectangleShape(this, gameFeatures);
     }

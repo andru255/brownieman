@@ -6,6 +6,7 @@ export enum KeyName {
     ENTER = 13,
     ESC = 27,
     SBAR = 32,
+    D = 68, // ATTACK BOMB
 }
 export function on(target, eventName, event: (evt?) => void) {
     target.addEventListener(eventName, event, false);
