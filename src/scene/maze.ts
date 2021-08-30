@@ -21,7 +21,8 @@ export default class MazeScene extends Layer {
                 this.player.nextPos = undefined;
             }
             if (this.player.attack) {
-                this.createBomb(gameFeatures, this.player.x, this.player.y);
+                const c = this.grid.gblock(this.player);
+                this.createBomb(gameFeatures, c);
                 this.player.attack = false;
             }
             this.player.isKeyPressed = false;
@@ -30,32 +31,20 @@ export default class MazeScene extends Layer {
         this.bombs.forEach((b) => b.update(gameFeatures));
     }
 
-    createBomb(gameFeatures, x, y) {
+    createBomb(gameFeatures, c: Layer) {
         const b = new BombLayer();
-        b.x = x;
-        b.y = y;
+        b.x = b.sP(c).x;
+        b.y = b.sP(c).y;
         b.start(gameFeatures);
-        b.wave = b.wave.map((l) => {
-            if (this.grid.collideWithXBlocks(l)) {
-                return undefined;
-            }
-            return l;
-        });
+        b.wave = this.grid.gvalidB(b.wave);
         b.wave.forEach((w, index) => {
             if (w !== undefined) {
                 b.expand(index);
             }
         });
-        b.wave = b.wave
-            .filter((l) => l !== undefined)
-            .map((l) => {
-                if (this.grid.collideWithXBlocks(l)) {
-                    return undefined;
-                }
-                return l;
-            });
-
-        console.log('b.wave', b.wave);
+        //b.wave = b.wave.filter((l) => l !== undefined).map(bmap);
+        b.wave = this.grid.gvalidB(b.wave);
+        //console.log('b.wave', b.wave);
         this.bombs.push(b);
     }
 

@@ -5,10 +5,10 @@ import { rectangleShape } from '@toolbox/Shape';
 import Config from 'src/Config';
 
 export default class PlayerLayer extends Layer {
-    width = Config.CELL_SIZE - Config.CELL_SIZE / 10;
-    height = Config.CELL_SIZE - Config.CELL_SIZE / 10;
-    x = Config.CELL_SIZE * 2 + 5;
-    y = Config.CELL_SIZE + 5;
+    width = Config.CELL_SIZE - Config.CELL_SIZE / Config.UNIT;
+    height = Config.CELL_SIZE - Config.CELL_SIZE / Config.UNIT;
+    x = Config.CELL_SIZE + Config.UNIT;
+    y = Config.CELL_SIZE + Config.UNIT;
     strokeStyle = '';
     vx = Config.PLAYER_VELOCITY;
     vy = Config.PLAYER_VELOCITY;
@@ -22,7 +22,7 @@ export default class PlayerLayer extends Layer {
 
     start(gameFeatures: GameFeatures): void {
         this.shared.isCollided = false;
-        on(document, 'keyup', (evt) => {
+        on(document, 'keydown', (evt) => {
             this.isKeyPressed = true;
             this.direction = undefined;
             console.log('evt.keyCode', evt.keyCode);

@@ -1,8 +1,9 @@
 export default {
     WIDTH: 800,
     HEIGHT: 600,
-    CELL_SIZE: 50,
+    CELL_SIZE: 32,
     PAD_VIEWPORT_HEIGHT: 300,
     MOBILE_BUTTON_SIZE: 100,
-    PLAYER_VELOCITY: 61,
+    PLAYER_VELOCITY: 32, // CELL_SIZE / 1
+    UNIT: 4,
 };
