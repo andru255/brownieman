@@ -16,11 +16,14 @@ export default class MazeScene extends Layer {
         this.grid.start(gameFeatures);
         this.player.start(gameFeatures);
     }
+
     update(gameFeatures: GameFeatures): void {
+        this.clean();
         if (this.player.isKeyPressed) {
             let pp = this.player.nextStep(this.player.direction);
             this.player.nextPos = pp;
-            if (this.grid.collideWithXBlocks(pp)) {
+            let result = this.grid.gvalidB([pp]).filter((e) => e !== undefined).length;
+            if (!result) {
                 this.player.nextPos = undefined;
             }
             if (this.player.attack) {
@@ -31,7 +34,17 @@ export default class MazeScene extends Layer {
             this.player.isKeyPressed = false;
         }
         this.hud.update(gameFeatures);
-        this.bombs.forEach((b) => b.update(gameFeatures));
+        this.bombs.forEach((b) => {
+            b.update(gameFeatures);
+            if (b.isExpanded) {
+                this.boom(b, gameFeatures, (wave) => {
+                    if (wave.some((b) => b.collideWith(this.player))) {
+                        this.player.lost();
+                    }
+                });
+                b.isExpanded = false;
+            }
+        });
         this.player.update(gameFeatures);
     }
 
@@ -41,17 +54,17 @@ export default class MazeScene extends Layer {
         b.y = b.sP(c).y;
         b.start(gameFeatures);
         this.bombs.push(b);
-        //this.boom(b, gameFeatures);
     }
 
-    boom(b: BombLayer, gameFeatures) {
+    boom(b: BombLayer, gameFeatures, cb: (wave: Layer[]) => void) {
         b.wave = this.grid.gvalidB(b.wave); // conditioning initial explotion
         b.wave.forEach((w, index) => {
             if (w !== undefined) {
                 b.expand(index);
             }
-        }); // expation without rules
+        }); // expantion without rules
         b.wave = this.grid.gvalidB(b.wave); // conditioning in the maze
+        cb(b.wave.filter((b) => b !== undefined));
     }
 
     render(gameFeatures: GameFeatures): void {
@@ -59,5 +72,9 @@ export default class MazeScene extends Layer {
         this.grid.render(gameFeatures);
         this.bombs.forEach((b) => b.render(gameFeatures));
         this.player.render(gameFeatures);
+    }
+
+    private clean() {
+        this.bombs = this.bombs.filter((b) => b.rm == false);
     }
 }

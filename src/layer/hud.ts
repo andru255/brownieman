@@ -31,10 +31,9 @@ export default class HudLayer extends Layer {
         let millisecs = Math.floor(10 * (dt - Math.floor(dt)));
         if (!this.timeoutValue) {
             this.timeoutValue = dt + this.countdown / 1000;
-            console.log('rrr', this.timeoutValue, dt);
         }
         if (this.timeoutValue < dt) {
-            this.countdownText.text = `Out: ${mins} : ${secs} : ${millisecs}`;
+            this.countdownText.text = `TIME: ${mins} : ${secs} : ${millisecs}`;
         }
     }
 

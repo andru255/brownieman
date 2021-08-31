@@ -58,7 +58,9 @@ export default class GridLayer extends Layer {
             this.layerMap.push(...rowLayer);
         });
     }
+
     update(gameFeatures: GameFeatures): void {}
+
     render(gameFeatures: GameFeatures): void {
         //rectangleShape(this, gameFeatures);
         this.layerMap.forEach((l) => rectangleShape(l, gameFeatures));

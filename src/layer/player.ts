@@ -19,6 +19,7 @@ export default class PlayerLayer extends Layer {
     direction: KeyName;
     nextPos: Layer;
     attack: boolean;
+    alive: boolean = true;
 
     start(gameFeatures: GameFeatures): void {
         this.shared.isCollided = false;
@@ -70,5 +71,12 @@ export default class PlayerLayer extends Layer {
             return <Layer>{ ...this, x: this.x, y: this.y + this.vy, fillStyle: '#479f57' };
         }
         return this;
+    }
+
+    public lost() {
+        if (this.alive) {
+            this.alive = false;
+            console.log('TOUCHED BY A BROWNIE HAHA!');
+        }
     }
 }

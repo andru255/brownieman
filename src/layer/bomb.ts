@@ -11,12 +11,12 @@ export default class BombLayer extends Layer {
     wave: Layer[] = [];
     //shared
     isExpanded: boolean = false;
+    rm = false; // remove it!
     levelExpand: number = 3;
     timeout: number = 0;
-    timeliveExpanded = 0;
-
+    bombExpanded = { t: false, tt: 0 };
     dt: number = 0;
-    timer = 1000; // milliseconds
+    timer = 1500; // milliseconds
 
     start(gameFeatures: GameFeatures): void {}
 
@@ -31,7 +31,12 @@ export default class BombLayer extends Layer {
         }
 
         if (this.isExpanded) {
-            const bl = <Layer>{ width: this.width, height: this.height, fillStyle: '#f00' };
+            const bl = <Layer>{
+                width: this.width,
+                height: this.height,
+                fillStyle: '#f00',
+                collideWith: this.collideWith,
+            };
             this.wave = [
                 {
                     ...bl,
@@ -54,18 +59,18 @@ export default class BombLayer extends Layer {
                     y: this.y,
                 }, // RIGHT
             ];
-            //if (!this.timeliveExpanded) {
-            //    this.timeliveExpanded = this.timeout + dt + 500 / 1000;
-            //}
-            this.isExpanded = false;
+            if (!this.bombExpanded.t) {
+                this.bombExpanded.t = true;
+                this.bombExpanded.tt = dt + 200 / 1000;
+            }
         }
 
-        //if (this.timeliveExpanded - dt <= 0) {
-        //    console.log('remove it!');
-        //    this.isExpanded = false;
-        //    this.width = 0;
-        //    this.height = 0;
-        //}
+        if (this.bombExpanded.t) {
+            if (this.bombExpanded.tt - dt <= 0) {
+                this.rm = true;
+                this.bombExpanded.t = false;
+            }
+        }
     }
 
     render(gameFeatures: GameFeatures): void {
@@ -80,15 +85,14 @@ export default class BombLayer extends Layer {
 
     public expand(index) {
         let loopExp = [...Array(this.levelExpand).keys()];
+        const bl = <Layer>{ width: this.width, height: this.height, collideWith: this.collideWith, fillStyle: '#ff0' };
         if (index === 0) {
             loopExp.forEach((l) => {
                 this.wave.push(
                     <Layer>{
-                        width: this.width,
-                        height: this.height,
+                        ...bl,
                         x: this.wave[0].x,
                         y: this.wave[0].y - this.height * l - Config.UNIT * 2 * l,
-                        fillStyle: '#ffff00',
                     } // TOP
                 );
             });
@@ -97,11 +101,9 @@ export default class BombLayer extends Layer {
             loopExp.forEach((l) => {
                 this.wave.push(
                     <Layer>{
-                        width: this.width,
-                        height: this.height,
+                        ...bl,
                         x: this.wave[1].x,
                         y: this.wave[1].y + this.height * l + Config.UNIT * 2 * l,
-                        fillStyle: '#ffff00',
                     } // BOTTOM
                 );
             });
@@ -110,11 +112,9 @@ export default class BombLayer extends Layer {
             loopExp.forEach((l) => {
                 this.wave.push(
                     <Layer>{
-                        width: this.width,
-                        height: this.height,
+                        ...bl,
                         x: this.wave[2].x - this.width * l - Config.UNIT * 2 * l,
                         y: this.wave[2].y,
-                        fillStyle: '#ffff00',
                     } // LEFT
                 );
             });
@@ -123,11 +123,9 @@ export default class BombLayer extends Layer {
             loopExp.forEach((l) => {
                 this.wave.push(
                     <Layer>{
-                        width: this.width,
-                        height: this.height,
+                        ...bl,
                         x: this.wave[3].x + this.width * l + Config.UNIT * 2 * l,
                         y: this.wave[3].y,
-                        fillStyle: '#ffff00',
                     } // RIGHT
                 );
             });
