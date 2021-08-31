@@ -10,40 +10,62 @@ export default class BombLayer extends Layer {
     //y = Config.CELL_SIZE * 2 + 4;
     wave: Layer[] = [];
     //shared
-    isExpanded: boolean;
+    isExpanded: boolean = false;
     levelExpand: number = 3;
+    timeout: number = 0;
+    timeliveExpanded = 0;
 
-    start(gameFeatures: GameFeatures): void {
-        this.isExpanded = true;
-        const bl = <Layer>{ width: this.width, height: this.height, fillStyle: '#f00' };
-        this.wave = [
-            {
-                ...bl,
-                x: this.x,
-                y: this.y - this.height - Config.UNIT * 2,
-            }, // TOP
-            {
-                ...bl,
-                x: this.x,
-                y: this.y + this.height + Config.UNIT * 2,
-            }, // BOTTOM
-            {
-                ...bl,
-                x: this.x - this.width - Config.UNIT * 2,
-                y: this.y,
-            }, // LEFT
-            {
-                ...bl,
-                x: this.x + this.width + Config.UNIT * 2,
-                y: this.y,
-            }, // RIGHT
-        ];
-    }
+    dt: number = 0;
+    timer = 1000; // milliseconds
+
+    start(gameFeatures: GameFeatures): void {}
 
     update(gameFeatures: GameFeatures): void {
+        const { dt } = gameFeatures;
+        if (!this.timeout) {
+            this.timeout = dt + this.timer / 1000;
+        }
+
+        if (this.timeout - dt <= 0) {
+            this.isExpanded = true;
+        }
+
         if (this.isExpanded) {
+            const bl = <Layer>{ width: this.width, height: this.height, fillStyle: '#f00' };
+            this.wave = [
+                {
+                    ...bl,
+                    x: this.x,
+                    y: this.y - this.height - Config.UNIT * 2,
+                }, // TOP
+                {
+                    ...bl,
+                    x: this.x,
+                    y: this.y + this.height + Config.UNIT * 2,
+                }, // BOTTOM
+                {
+                    ...bl,
+                    x: this.x - this.width - Config.UNIT * 2,
+                    y: this.y,
+                }, // LEFT
+                {
+                    ...bl,
+                    x: this.x + this.width + Config.UNIT * 2,
+                    y: this.y,
+                }, // RIGHT
+            ];
+            //if (!this.timeliveExpanded) {
+            //    this.timeliveExpanded = this.timeout + dt + 500 / 1000;
+            //}
             this.isExpanded = false;
         }
+
+        //if (this.timeliveExpanded - dt <= 0) {
+        //    console.log('remove it!');
+        //    this.isExpanded = false;
+        //    this.width = 0;
+        //    this.height = 0;
+        //}
     }
 
     render(gameFeatures: GameFeatures): void {
@@ -54,14 +76,6 @@ export default class BombLayer extends Layer {
     // set position
     public sP(l: Layer) {
         return { x: l.x + Config.UNIT, y: l.y + Config.UNIT };
-    }
-
-    public pExp(ls: Layer[]): Layer[] {
-        const _lg = [];
-        ls.forEach((l) => {
-            console.log('gpos', l.shared.gpos);
-        });
-        return _lg;
     }
 
     public expand(index) {

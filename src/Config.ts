@@ -6,4 +6,5 @@ export default {
     MOBILE_BUTTON_SIZE: 100,
     PLAYER_VELOCITY: 32, // CELL_SIZE / 1
     UNIT: 4,
+    COUNTDOWN_BOMB: 2 * 1000,
 };

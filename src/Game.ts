@@ -24,7 +24,7 @@ export default class Game {
 
     getFeatures() {
         return {
-            dt: this.dt,
+            dt: this.accumulator,
             canvas: this.canvas,
             ctx: this.ctx,
             on: () => this.on(),
@@ -36,19 +36,10 @@ export default class Game {
     setup() {
         this.draw = () => {
             this.animLoop = window.requestAnimationFrame(this.draw);
-            this.now = performance.now();
-            this.dt = this.now - this.last;
-            this.last = this.now;
-            if (this.dt > 1e3) {
-                return;
-            }
-            this.accumulator += this.dt;
-            while (this.accumulator >= this.delta) {
-                this.mainLayer.update(this.getFeatures());
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                this.mainLayer.render(this.getFeatures());
-                this.accumulator -= this.delta;
-            }
+            this.accumulator += this.step;
+            this.mainLayer.update(this.getFeatures());
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.mainLayer.render(this.getFeatures());
         };
         this.mainLayer.start(this.getFeatures());
     }
