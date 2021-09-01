@@ -12,7 +12,7 @@ export default class PlayerLayer extends Layer {
     strokeStyle = '';
     vx = Config.PLAYER_VELOCITY;
     vy = Config.PLAYER_VELOCITY;
-    fillStyle = 'rgba(136, 160, 240, 0.8)'; // '#88a0f0';
+    fillStyle = 'rgba(136, 160, 240, 0.4)'; // '#88a0f0';
     //shared
     isCollided: boolean;
     isKeyPressed: boolean;

@@ -4,6 +4,7 @@ import BombLayer from '@layer/bomb';
 import GridLayer from '@layer/grid';
 import HudLayer from '@layer/hud';
 import PlayerLayer from '@layer/player';
+import Config from 'src/Config';
 export default class MazeScene extends Layer {
     hud = new HudLayer();
     grid = new GridLayer();
@@ -22,8 +23,10 @@ export default class MazeScene extends Layer {
         if (this.player.isKeyPressed) {
             let pp = this.player.nextStep(this.player.direction);
             this.player.nextPos = pp;
-            let result = this.grid.gvalidB([pp]).filter((e) => e !== undefined).length;
-            if (!result) {
+            if (
+                !this.grid.gvalidB([pp]).filter((e) => e !== undefined).length ||
+                this.bombs.some((b) => b.collideWith(pp))
+            ) {
                 this.player.nextPos = undefined;
             }
             if (this.player.attack) {
@@ -49,9 +52,14 @@ export default class MazeScene extends Layer {
     }
 
     createBomb(gameFeatures, c: Layer) {
+        const x = c.x + Config.UNIT;
+        const y = c.y + Config.UNIT;
+        if (this.bombs.some((b) => b.x === x && b.y === y)) {
+            return;
+        }
         const b = new BombLayer();
-        b.x = b.sP(c).x;
-        b.y = b.sP(c).y;
+        b.x = x;
+        b.y = y;
         b.start(gameFeatures);
         this.bombs.push(b);
     }

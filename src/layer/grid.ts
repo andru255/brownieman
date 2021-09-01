@@ -108,4 +108,18 @@ export default class GridLayer extends Layer {
                 return layer.collideWith(b);
             });
     }
+
+    // generates the sequence of black hole
+    public genSeq(w, h): { x: number; y: number }[] {
+        let s = [];
+        let x = [...Array(w).keys()];
+        let y = [...Array(h).keys()];
+        // I
+        x.forEach((i) => s.push({ x: i, y: 0 }));
+
+        // II
+        y.forEach((j) => s.push({ x: w, y: j }));
+
+        return s;
+    }
 }

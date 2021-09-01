@@ -80,7 +80,7 @@ export default class BombLayer extends Layer {
 
     // set position
     public sP(l: Layer) {
-        return { x: l.x + Config.UNIT, y: l.y + Config.UNIT };
+        return { x: l.x, y: l.y };
     }
 
     public expand(index) {
