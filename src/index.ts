@@ -25,10 +25,6 @@ export default function $BM() {
         }
         style.width = `${nw}px`;
         style.height = `${nh}px`;
-
-        if (game.isMob()) {
-            c.height += Config.PAD_VIEWPORT_HEIGHT;
-        }
     };
     resizr(window.innerWidth, window.innerHeight);
     game.setup();

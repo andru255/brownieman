@@ -12,7 +12,7 @@ export default class HudLayer extends Layer {
     strokeStyle = '';
     countdownText = <Layer>{};
     timeoutValue = 0;
-    countdown = 1000;
+    countdown = 10000 * 6 + 100; // 1min
     dt = 0;
 
     start(gameFeatures: GameFeatures): void {
@@ -24,21 +24,26 @@ export default class HudLayer extends Layer {
             y: Config.CELL_SIZE / 2,
         };
     }
+
     update(gameFeatures: GameFeatures): void {
-        const { dt } = gameFeatures;
-        let mins = Math.floor(dt / 60);
-        let secs = Math.floor(dt - mins * 60);
-        let millisecs = Math.floor(10 * (dt - Math.floor(dt)));
+        const { dt, step } = gameFeatures;
         if (!this.timeoutValue) {
             this.timeoutValue = dt + this.countdown / 1000;
         }
-        if (this.timeoutValue < dt) {
-            this.countdownText.text = `TIME: ${mins} : ${secs} : ${millisecs}`;
+        if (this.timeoutValue > Math.floor(dt / 60)) {
+            this.countdownText.text = this.mmss(this.timeoutValue);
+            this.timeoutValue -= step;
         }
     }
 
     render(gameFeatures: GameFeatures): void {
         rectangleShape(this, gameFeatures);
         textShape(this.countdownText, gameFeatures);
+    }
+
+    private mmss(dt) {
+        const m = Math.floor(dt / 60);
+        const s3 = Math.floor(10 * (dt - Math.floor(dt)));
+        return `${m}:${Math.floor(dt - m * 60)}:${s3}`;
     }
 }

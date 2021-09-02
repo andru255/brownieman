@@ -52,6 +52,14 @@ export default class ContextWrapper {
         return this;
     }
     /**
+     * @method ctx.rotate(angle)
+     * @returns ContextWrapper
+     */
+    public r(angle): ContextWrapper {
+        this._ctx.rotate(angle);
+        return this;
+    }
+    /**
      * @method ctx.scale(x, y)
      * @returns ContextWrapper
      */

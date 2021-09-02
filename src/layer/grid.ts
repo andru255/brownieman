@@ -32,6 +32,10 @@ export default class GridLayer extends Layer {
     ];
 
     layerMap: Layer[] = [];
+    cm: any[][] = [];
+    intervalToDestroyEachBlock = 300;
+    _countInterval = 0;
+
     start(gameFeatures: GameFeatures): void {
         let cellSize = Config.CELL_SIZE;
         this.width = this.map[0].length * cellSize;
@@ -40,10 +44,12 @@ export default class GridLayer extends Layer {
         this.y = cellSize;
         this.map.forEach((row, rowIndex) => {
             const y = this.y * (rowIndex + 1);
+            const ci = [];
             let rowLayer = row.map((cell, cellIndex) => {
                 const x = this.x + cellSize * cellIndex + 1;
                 const bl = <Layer>{ width: cellSize, height: cellSize, x, y, collideWith: this.collideWith };
                 const gpos = { x: cellIndex, y: rowIndex };
+                ci.push(gpos);
                 if (cell === 'X') {
                     return {
                         ...bl,
@@ -56,7 +62,10 @@ export default class GridLayer extends Layer {
                 }
             });
             this.layerMap.push(...rowLayer);
+            this.cm.push(ci);
         });
+        //console.log('seq', this.gseq(this.cm));
+        this.prepareDestroy();
     }
 
     update(gameFeatures: GameFeatures): void {}
@@ -109,17 +118,29 @@ export default class GridLayer extends Layer {
             });
     }
 
-    // generates the sequence of black hole
-    public genSeq(w, h): { x: number; y: number }[] {
-        let s = [];
-        let x = [...Array(w).keys()];
-        let y = [...Array(h).keys()];
-        // I
-        x.forEach((i) => s.push({ x: i, y: 0 }));
+    public gseq(arr: string[][]): string[] {
+        return arr.length > 1
+            ? arr.splice(0, 1)[0].concat(
+                  this.gseq(
+                      arr[0]
+                          .map((c, i) => {
+                              return arr.map((r) => r[i]);
+                          })
+                          .reverse()
+                  )
+              )
+            : arr[0];
+    }
 
-        // II
-        y.forEach((j) => s.push({ x: w, y: j }));
-
-        return s;
+    public prepareDestroy() {
+        this.layerMap.forEach((item) => {
+            if (item.shared.gpos.x == 2 && item.shared.gpos.y == 1) {
+                item.fillStyle = 'rgba(255,255,255,0)';
+                item.shared.t = 'X';
+            }
+        });
+        //steps.forEach((step) => {
+        //    this.map[]
+        //})
     }
 }

@@ -8,6 +8,37 @@ export enum KeyName {
     SBAR = 32,
     D = 68, // ATTACK BOMB
 }
-export function on(target, eventName, event: (evt?) => void) {
-    target.addEventListener(eventName, event, false);
+
+const pattern = /([a-z]+)\.?(.*)?/;
+const isUndefined = (value) => value === undefined;
+const evts = {};
+
+export function on(target: EventTarget, name, event: (evt?) => void) {
+    const m = name.match(pattern);
+    if (!isUndefined(m)) {
+        evts[name] = (c) => event(c);
+        let e = m[1];
+        target.addEventListener(m[1], evts[name], false);
+    }
+}
+
+export function off(target: EventTarget, name) {
+    const _n = evts[name];
+    const m = name.match(pattern);
+    if (!isUndefined(m) && !isUndefined(_n)) {
+        let e = m[1];
+        Reflect.deleteProperty(evts, e);
+        target.removeEventListener(e, _n, false);
+    }
+}
+
+export function once(target: EventTarget, name, event: (evt?) => void) {
+    const m = name.match(pattern);
+    if (!isUndefined(m)) {
+        evts[name] = (c) => {
+            event(c);
+            off(target, name);
+        };
+        target.addEventListener(m[1], evts[name], false);
+    }
 }

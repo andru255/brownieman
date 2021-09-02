@@ -25,6 +25,7 @@ export default class Game {
     getFeatures() {
         return {
             dt: this.accumulator,
+            step: this.step,
             canvas: this.canvas,
             ctx: this.ctx,
             on: () => this.on(),

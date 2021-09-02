@@ -36,8 +36,9 @@ export function textShape(layer: Layer, gf: any) {
 export function imgShape(layer: Layer, gf) {
     const ctx = <CanvasRenderingContext2D>gf.ctx;
     ctx.save();
+    ctx.translate(layer.x + layer.width / 2, layer.y + layer.height / 2);
     ctx.rotate(layer.rotation);
-    ctx.drawImage(layer.img, layer.x, layer.y);
+    ctx.drawImage(layer.img, -layer.width / 2, -layer.height / 2);
     ctx.restore();
 }
 
