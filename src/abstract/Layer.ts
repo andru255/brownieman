@@ -14,6 +14,7 @@ export default abstract class Layer {
     strokeStyle?: string = '#00f';
     lineWidth?: number = 0;
     img?: HTMLCanvasElement;
+    center?: boolean = false;
     // velocity
     vx?: number = 0;
     vy?: number = 0;

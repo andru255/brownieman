@@ -1,12 +1,14 @@
 import Layer from '@abstract/Layer';
 import { GameFeatures } from '@interface/GameFeatures';
-import { on } from '@toolbox/EventWrapper';
+import { off, on } from '@toolbox/EventWrapper';
 import { getIt, isRectInsideOther } from '@toolbox/mousePosition';
-import { rectangleShape, textShape } from '@toolbox/Shape';
+import { imgShape, rectangleShape, textShape } from '@toolbox/Shape';
+import Config from 'src/Config';
 
 export default class ButtonLayer extends Layer {
     id: string;
-    label = <Layer>{ fillStyle: '#00416d', font: '30px Arial, sans-serif' };
+    label = <Layer>{ fillStyle: '#00416d', font: `${Config.CELL_SIZE * 3}px Arial, sans-serif` };
+    icon = <Layer>{ fillStyle: '#00416d' };
     fillStyle = '#f00';
     events = {};
     start(gameFeatures: GameFeatures): void {
@@ -16,13 +18,15 @@ export default class ButtonLayer extends Layer {
         if (this.isHidden) {
             return;
         }
-        this.listen(gameFeatures.canvas);
     }
     render?(gameFeatures: GameFeatures): void {
         if (this.isHidden) {
             return;
         }
         rectangleShape(this, gameFeatures);
+        if (this.icon.img) {
+            imgShape(this.icon, gameFeatures);
+        }
         textShape(this.label, gameFeatures);
     }
 
@@ -33,6 +37,14 @@ export default class ButtonLayer extends Layer {
     hide() {
         if (this.isHidden) return;
         this.isHidden = true;
+    }
+
+    public off(canvas: HTMLCanvasElement) {
+        const names = ['mousedown', 'mouseup', 'click', 'mousemove', 'keyup'];
+        names.forEach((name) => {
+            off(document, `${name}.${this.id}`);
+        });
+        canvas.classList.remove('cursor');
     }
 
     private listen(canvas: HTMLCanvasElement) {

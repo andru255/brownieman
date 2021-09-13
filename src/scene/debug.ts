@@ -2,11 +2,12 @@ import Layer from '@abstract/Layer';
 import { GameFeatures } from '@interface/GameFeatures';
 import { on } from '@toolbox/EventWrapper';
 import { getIt } from '@toolbox/mousePosition';
-import { rectangleShape, textShape } from '@toolbox/Shape';
+import { imgShape, rectangleShape, textShape } from '@toolbox/Shape';
+import Config from 'src/Config';
+import { CircleGraphic } from 'src/graphic/circle';
 
 export default class DebugScene extends Layer {
     mousePositionLbl = <Layer>{ x: 10, y: 50, width: 100, height: 100, font: '20px Arial' };
-
     start(gameFeatures: GameFeatures): void {
         this.mousePositionLbl.text = this.showMousePositionText();
         on(document, 'mousemove', (evt) => {

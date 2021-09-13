@@ -23,7 +23,7 @@ export default class PlayerLayer extends Layer {
 
     start(gameFeatures: GameFeatures): void {
         this.shared.isCollided = false;
-        on(document, 'keydown', (evt) => {
+        on(document, 'keydown.player', (evt) => {
             this.isKeyPressed = true;
             this.direction = undefined;
             console.log('evt.keyCode', evt.keyCode);

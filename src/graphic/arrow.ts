@@ -1,15 +1,21 @@
 import Layer from '@abstract/Layer';
 import { builderShape } from '@toolbox/Shape';
-import Config from 'src/Config';
 
 export const ArrowGraphic = (l: Layer) => {
     return builderShape(l, (ctx) => {
-        ctx.bp()
-            .mv2(l.width / 2, 0)
-            .l2(0, l.height)
-            .l2(l.width, l.height)
-            .tl(l.width / 2, l.height / 2)
-            .cp()
-            .fl();
+        ctx.beginPath();
+        ctx.fillStyle = l.fillStyle;
+        ctx.moveTo(l.width / 2, 0);
+        ctx.lineTo(0, l.height);
+        ctx.lineTo(l.width, l.height);
+        ctx.lineTo(-l.width / 2, -l.height - l.width);
+        ctx.translate(l.width / 2, l.height / 2);
+        if (l.strokeStyle) {
+            ctx.lineWidth = l.lineWidth;
+            ctx.strokeStyle = l.strokeStyle;
+            ctx.stroke();
+        }
+        ctx.closePath();
+        ctx.fill();
     });
 };
