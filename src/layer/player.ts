@@ -22,6 +22,9 @@ export default class PlayerLayer extends Layer {
     alive: boolean = true;
 
     start(gameFeatures: GameFeatures): void {
+        this.x = gameFeatures.viewport.x;
+        this.y = gameFeatures.viewport.y + Config.CELL_SIZE;
+
         this.shared.isCollided = false;
         on(document, 'keydown.player', (evt) => {
             this.isKeyPressed = true;

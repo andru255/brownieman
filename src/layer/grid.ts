@@ -35,19 +35,20 @@ export default class GridLayer extends Layer {
     cm: any[][] = [];
     intervalToDestroyEachBlock = 300;
     _countInterval = 0;
+    cellSize = Config.CELL_SIZE;
 
     start(gameFeatures: GameFeatures): void {
-        let cellSize = Config.CELL_SIZE;
-        this.width = this.map[0].length * cellSize;
-        this.height = this.map.length * cellSize;
-        this.x = cellSize;
-        this.y = cellSize;
+        this.cellSize = gameFeatures.viewport.cellSize;
+        this.width = this.map[0].length * this.cellSize;
+        this.height = this.map.length * this.cellSize;
+        this.x = gameFeatures.viewport.x;
+        this.y = this.cellSize;
         this.map.forEach((row, rowIndex) => {
             const y = this.y * (rowIndex + 1);
             const ci = [];
             let rowLayer = row.map((cell, cellIndex) => {
-                const x = this.x + cellSize * cellIndex + 1;
-                const bl = <Layer>{ width: cellSize, height: cellSize, x, y, collideWith: this.collideWith };
+                const x = this.x + this.cellSize * cellIndex + 1;
+                const bl = <Layer>{ width: this.cellSize, height: this.cellSize, x, y, collideWith: this.collideWith };
                 const gpos = { x: cellIndex, y: rowIndex };
                 ci.push(gpos);
                 if (cell === 'X') {
@@ -65,10 +66,12 @@ export default class GridLayer extends Layer {
             this.cm.push(ci);
         });
         //console.log('seq', this.gseq(this.cm));
-        this.prepareDestroy();
+        //this.prepareDestroy();
     }
 
-    update(gameFeatures: GameFeatures): void {}
+    update(gameFeatures: GameFeatures): void {
+        this.cellSize = gameFeatures.viewport.cellSize;
+    }
 
     render(gameFeatures: GameFeatures): void {
         //rectangleShape(this, gameFeatures);

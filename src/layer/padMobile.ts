@@ -2,9 +2,9 @@ import Layer from '@abstract/Layer';
 import { GameFeatures } from '@interface/GameFeatures';
 import { circleShape, imgShape, rectangleShape } from '@toolbox/Shape';
 import Config from 'src/Config';
-import { ArrowGraphic } from 'src/graphic/arrow';
-import { CircleGraphic } from 'src/graphic/circle';
-import ButtonLayer from './button';
+import { ArrowGraphic } from 'src/graphic/Arrow';
+import { CircleGraphic } from 'src/graphic/Circle';
+import ButtonLayer from './Button';
 
 export default class padMobileLayer extends Layer {
     controls: Layer[] = [];
@@ -25,7 +25,7 @@ export default class padMobileLayer extends Layer {
     }
 
     private setupControls(gf: GameFeatures) {
-        let u = Config.CELL_SIZE;
+        let u = Config.UNIT;
         [
             { id: 'Top', x: this.x + u * 13, y: this.y + u * 3, rotation: 0, fillStyle: 'green' },
             { id: 'Bottom', x: this.x + u * 13, y: this.y + u * 13, rotation: 180, fillStyle: 'orange' },

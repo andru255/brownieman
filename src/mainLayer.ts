@@ -1,8 +1,7 @@
 import Layer from '@abstract/Layer';
 import { GameFeatures } from '@interface/GameFeatures';
-import padMobileLayer from '@layer/padMobile';
-import DebugScene from './scene/debug';
-import MazeScene from './scene/maze';
+import padMobileLayer from '@layer/PadMobile';
+import ViewportLayer from './scene/Viewport';
 
 export default class MainLayer extends Layer {
     x = 10;
@@ -10,11 +9,7 @@ export default class MainLayer extends Layer {
     width = 20;
     height = 20;
 
-    scenes: Layer[] = [
-        new DebugScene(),
-        // new MazeScene(),
-    ];
-
+    viewport = new ViewportLayer();
     paddleMobile = new padMobileLayer();
 
     start(gameFeatures: GameFeatures): void {
@@ -22,15 +17,20 @@ export default class MainLayer extends Layer {
         if (gameFeatures.isMob()) {
             this.paddleMobile.start(gameFeatures);
         }
-        this.scenes.forEach((scene) => scene.start(gameFeatures));
+        this.viewport.start(gameFeatures);
     }
+
     update(gameFeatures: GameFeatures): void {
-        this.scenes.forEach((scene) => scene.update(gameFeatures));
+        if (gameFeatures.isMob()) {
+            this.paddleMobile.update(gameFeatures);
+        }
+        this.viewport.update(gameFeatures);
     }
+
     render(gameFeatures: GameFeatures): void {
+        this.viewport.render(gameFeatures);
         if (gameFeatures.isMob()) {
             this.paddleMobile.render(gameFeatures);
         }
-        this.scenes.forEach((scene) => scene.render(gameFeatures));
     }
 }

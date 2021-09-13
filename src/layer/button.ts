@@ -1,13 +1,13 @@
 import Layer from '@abstract/Layer';
 import { GameFeatures } from '@interface/GameFeatures';
 import { off, on } from '@toolbox/EventWrapper';
-import { getIt, isRectInsideOther } from '@toolbox/mousePosition';
+import { getIt, isRectInsideOther } from '@toolbox/MousePosition';
 import { imgShape, rectangleShape, textShape } from '@toolbox/Shape';
 import Config from 'src/Config';
 
 export default class ButtonLayer extends Layer {
     id: string;
-    label = <Layer>{ fillStyle: '#00416d', font: `${Config.CELL_SIZE * 3}px Arial, sans-serif` };
+    label = <Layer>{ fillStyle: '#00416d', font: `${Config.UNIT * 3}px Arial, sans-serif` };
     icon = <Layer>{ fillStyle: '#00416d' };
     fillStyle = '#f00';
     events = {};

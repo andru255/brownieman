@@ -1,9 +1,9 @@
 import Layer from '@abstract/Layer';
 import { GameFeatures } from '@interface/GameFeatures';
-import BombLayer from '@layer/bomb';
-import GridLayer from '@layer/grid';
-import HudLayer from '@layer/hud';
-import PlayerLayer from '@layer/player';
+import BombLayer from '@layer/Bomb';
+import GridLayer from '@layer/Grid';
+import HudLayer from '@layer/HUD';
+import PlayerLayer from '@layer/Player';
 import Config from 'src/Config';
 export default class MazeScene extends Layer {
     hud = new HudLayer();
@@ -20,6 +20,7 @@ export default class MazeScene extends Layer {
 
     update(gameFeatures: GameFeatures): void {
         this.clean();
+        this.grid.update(gameFeatures);
         if (this.player.isKeyPressed) {
             let pp = this.player.nextStep(this.player.direction);
             this.player.nextPos = pp;

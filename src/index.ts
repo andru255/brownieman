@@ -1,6 +1,6 @@
 import Config from './Config';
 import Game from './Game';
-import MainLayer from './mainLayer';
+import MainLayer from './MainLayer';
 
 export default function $BM() {
     // canvas&wrapper setup

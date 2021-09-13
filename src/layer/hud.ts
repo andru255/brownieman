@@ -8,7 +8,7 @@ export default class HudLayer extends Layer {
     y = 0;
     fillStyle = 'orange';
     width = Config.CELL_SIZE * 10;
-    height = Config.CELL_SIZE;
+    height = Config.CELL_SIZE * 2;
     strokeStyle = '';
     countdownText = <Layer>{};
     timeoutValue = 0;
@@ -26,12 +26,13 @@ export default class HudLayer extends Layer {
     }
 
     update(gameFeatures: GameFeatures): void {
+        this.x = gameFeatures.viewport.x;
         const { dt, step } = gameFeatures;
         if (!this.timeoutValue) {
             this.timeoutValue = dt + this.countdown / 1000;
         }
         if (this.timeoutValue > Math.floor(dt / 60)) {
-            this.countdownText.text = this.mmss(this.timeoutValue);
+            this.countdownText.text = this.mmss(this.timeoutValue, gameFeatures);
             this.timeoutValue -= step;
         }
     }
@@ -41,9 +42,9 @@ export default class HudLayer extends Layer {
         textShape(this.countdownText, gameFeatures);
     }
 
-    private mmss(dt) {
+    private mmss(dt, gameFeatures: GameFeatures) {
         const m = Math.floor(dt / 60);
         const s3 = Math.floor(10 * (dt - Math.floor(dt)));
-        return `${m}:${Math.floor(dt - m * 60)}:${s3}`;
+        return `${m}:${Math.floor(dt - m * 60)}:${s3} | CELL_SIZE: ${gameFeatures.viewport.cellSize}`;
     }
 }
