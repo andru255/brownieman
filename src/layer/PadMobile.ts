@@ -1,5 +1,6 @@
 import Layer from '@abstract/Layer';
 import { GameFeatures } from '@interface/GameFeatures';
+import { KeyName } from '@toolbox/EventWrapper';
 import { circleShape, imgShape, rectangleShape } from '@toolbox/Shape';
 import Config from 'src/Config';
 import { ArrowGraphic } from 'src/graphic/Arrow';
@@ -8,6 +9,7 @@ import ButtonLayer from './Button';
 
 export default class padMobileLayer extends Layer {
     controls: Layer[] = [];
+    outputs = {};
     btnDemo = new ButtonLayer();
     start(gameFeatures: GameFeatures): void {
         this.width = gameFeatures.canvas.width;
@@ -27,10 +29,38 @@ export default class padMobileLayer extends Layer {
     private setupControls(gf: GameFeatures) {
         let u = Config.UNIT;
         [
-            { id: 'Top', x: this.x + u * 13, y: this.y + u * 3, rotation: 0, fillStyle: 'green' },
-            { id: 'Bottom', x: this.x + u * 13, y: this.y + u * 13, rotation: 180, fillStyle: 'orange' },
-            { id: 'Left', x: this.x + u * 8, y: this.y + u * 8, rotation: -90, fillStyle: 'blue' },
-            { id: 'Right', x: this.x + u * 18, y: this.y + u * 8, rotation: 90, fillStyle: 'brown' },
+            {
+                id: 'Top',
+                x: this.x + u * 13,
+                y: this.y + u * 3,
+                rotation: 0,
+                fillStyle: 'green',
+                evt: KeyName.ARROW_UP,
+            },
+            {
+                id: 'Bottom',
+                x: this.x + u * 13,
+                y: this.y + u * 13,
+                rotation: 180,
+                fillStyle: 'orange',
+                evt: KeyName.ARROW_DOWN,
+            },
+            {
+                id: 'Left',
+                x: this.x + u * 8,
+                y: this.y + u * 8,
+                rotation: -90,
+                fillStyle: 'blue',
+                evt: KeyName.ARROW_LEFT,
+            },
+            {
+                id: 'Right',
+                x: this.x + u * 18,
+                y: this.y + u * 8,
+                rotation: 90,
+                fillStyle: 'brown',
+                evt: KeyName.ARROW_RIGHT,
+            },
         ].forEach((config) => {
             const btn = new ButtonLayer();
             btn.id = `btn${config.id}`;
@@ -50,13 +80,27 @@ export default class padMobileLayer extends Layer {
             btn.icon.rotation = config.rotation * (Math.PI / 180);
             btn.icon.img = ArrowGraphic(btn.icon);
             btn.on('click', (evt) => {
-                console.log(`GO ${config.id}`);
+                this.trigger(config.evt);
             });
             this.controls.push(btn);
         });
         [
-            { id: 'D', x: this.x + u * 50, y: this.y + u * 3, fillStyle: '#A0A5B5', labelFillStyle: '#4A3E80' },
-            { id: 'F', x: this.x + u * 64, y: this.y + u * 9, fillStyle: '#4A3E80', labelFillStyle: '#A0A5B5' },
+            {
+                id: 'D',
+                x: this.x + u * 50,
+                y: this.y + u * 3,
+                fillStyle: '#A0A5B5',
+                labelFillStyle: '#4A3E80',
+                evt: KeyName.D,
+            },
+            {
+                id: 'F',
+                x: this.x + u * 64,
+                y: this.y + u * 9,
+                fillStyle: '#4A3E80',
+                labelFillStyle: '#A0A5B5',
+                evt: KeyName.F,
+            },
         ].forEach((config) => {
             const btn = new ButtonLayer();
             const circleBorderWidth = 2;
@@ -83,9 +127,19 @@ export default class padMobileLayer extends Layer {
             btn.label.fillStyle = config.labelFillStyle;
             btn.label.text = config.id;
             btn.on('click', (evt) => {
-                console.log(`GO ${config.id}`);
+                this.trigger(config.evt);
             });
             this.controls.push(btn);
         });
+    }
+
+    link(id, fn) {
+        this.outputs[id] = fn;
+    }
+
+    trigger(evt) {
+        for (let output in this.outputs) {
+            this.outputs[output]({ keyCode: evt });
+        }
     }
 }

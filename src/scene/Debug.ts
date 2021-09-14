@@ -32,8 +32,8 @@ export default class DebugScene extends Layer {
     }
 
     render(gameFeatures: GameFeatures): void {
-        rectangleShape(this.keyPressBox, gameFeatures);
-        textShape(this.mousePositionLbl, gameFeatures);
+        //rectangleShape(this.keyPressBox, gameFeatures);
+        // textShape(this.mousePositionLbl, gameFeatures);
     }
 
     private showMousePositionText(x = 0, y = 0): string {

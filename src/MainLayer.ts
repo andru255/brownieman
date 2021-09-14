@@ -17,6 +17,8 @@ export default class MainLayer extends Layer {
         if (gameFeatures.isMob()) {
             this.paddleMobile.start(gameFeatures);
         }
+        gameFeatures.viewport = this.viewport;
+        gameFeatures.padMobile = this.paddleMobile;
         this.viewport.start(gameFeatures);
     }
 
@@ -24,6 +26,8 @@ export default class MainLayer extends Layer {
         if (gameFeatures.isMob()) {
             this.paddleMobile.update(gameFeatures);
         }
+        gameFeatures.viewport = this.viewport;
+        gameFeatures.padMobile = this.paddleMobile;
         this.viewport.update(gameFeatures);
     }
 

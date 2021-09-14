@@ -13,6 +13,9 @@ export default function $BM() {
     const resizr = (w, h) => {
         c.width = Config.WIDTH;
         c.height = Config.HEIGHT;
+        if (game.isMob()) {
+            c.height = Config.HEIGHT + Config.PAD_VIEWPORT_HEIGHT;
+        }
         const rt = w / h,
             crt = c.width / c.height;
         let nw = h * crt,

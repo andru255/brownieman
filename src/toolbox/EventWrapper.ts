@@ -7,6 +7,7 @@ export enum KeyName {
     ESC = 27,
     SBAR = 32,
     D = 68, // ATTACK BOMB
+    F = 70, // AUX OPT
 }
 
 const pattern = /([a-z]+)\.?(.*)?/;

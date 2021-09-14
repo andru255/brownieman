@@ -16,7 +16,6 @@ export default class ViewportLayer extends Layer {
         this.width = width;
         this.x = x;
         this.cellSize = cellSize;
-        gameFeatures.viewport = this;
         this.layers.forEach((l) => l.start(gameFeatures));
     }
 
@@ -26,7 +25,6 @@ export default class ViewportLayer extends Layer {
         this.width = width;
         this.x = x;
         this.cellSize = cellSize;
-        gameFeatures.viewport = this;
         this.layers.forEach((l) => l.update(gameFeatures));
     }
 
@@ -36,14 +34,6 @@ export default class ViewportLayer extends Layer {
     }
 
     private resize(gameFeatures: GameFeatures) {
-        if (gameFeatures.isMob()) {
-            return {
-                height: Config.HEIGHT - Config.PAD_VIEWPORT_HEIGHT,
-                width: Config.WIDTH - Config.PAD_VIEWPORT_HEIGHT / 2,
-                x: Config.UNIT * 5,
-                cellSize: Config.MOBILE_CELL_SIZE,
-            };
-        }
         return {
             height: Config.HEIGHT,
             width: Config.WIDTH,

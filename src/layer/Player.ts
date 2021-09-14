@@ -22,11 +22,10 @@ export default class PlayerLayer extends Layer {
     alive: boolean = true;
 
     start(gameFeatures: GameFeatures): void {
-        this.x = gameFeatures.viewport.x;
-        this.y = gameFeatures.viewport.y + Config.CELL_SIZE;
-
+        this.x = Config.CELL_SIZE;
+        this.y = Config.CELL_SIZE;
         this.shared.isCollided = false;
-        on(document, 'keydown.player', (evt) => {
+        const cb = (evt) => {
             this.isKeyPressed = true;
             this.direction = undefined;
             console.log('evt.keyCode', evt.keyCode);
@@ -45,7 +44,9 @@ export default class PlayerLayer extends Layer {
             if (evt.keyCode == KeyName.D) {
                 this.attack = true;
             }
-        });
+        };
+        on(document, 'keydown.player', cb);
+        gameFeatures.padMobile.link('player', cb);
     }
     update(gameFeatures: GameFeatures): void {
         if (this.nextPos !== undefined) {

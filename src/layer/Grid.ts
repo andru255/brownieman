@@ -20,15 +20,15 @@ export default class GridLayer extends Layer {
         ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
     ]; */
     map: string[][] = [
-        ['.', '.', '.', '.', '.', '.', '.'],
-        ['.', 'X', '.', 'X', '.', 'X', '.'],
-        ['.', '.', '.', '.', '.', '.', '.'],
-        ['.', 'X', '.', 'X', '.', 'X', '.'],
-        ['.', '.', '.', '.', '.', '.', '.'],
-        ['.', 'X', '.', 'X', '.', 'X', '.'],
-        ['.', '.', '.', '.', '.', '.', '.'],
-        ['.', 'X', '.', 'X', '.', 'X', '.'],
-        ['.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+        ['.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.'],
+        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+        ['.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.'],
+        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+        ['.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.'],
+        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+        ['.', 'X', '.', 'X', '.', 'X', '.', 'X', '.', 'X', '.'],
+        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
     ];
 
     layerMap: Layer[] = [];
@@ -41,7 +41,7 @@ export default class GridLayer extends Layer {
         this.cellSize = gameFeatures.viewport.cellSize;
         this.width = this.map[0].length * this.cellSize;
         this.height = this.map.length * this.cellSize;
-        this.x = gameFeatures.viewport.x;
+        this.x = this.cellSize;
         this.y = this.cellSize;
         this.map.forEach((row, rowIndex) => {
             const y = this.y * (rowIndex + 1);
