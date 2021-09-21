@@ -1,4 +1,4 @@
-const Easing = {
+export const Easing = {
     linear: (time: number, begin: number, change: number, duration: number): number => {
         const diff = change - begin;
         const f = time / duration;
@@ -91,9 +91,7 @@ export function isEqualToRGBA(a: LiteralRGBA, b: LiteralRGBA) {
     return a.red == b.red && a.green == b.green && a.blue == b.blue && a.alpha == b.alpha;
 }
 
-const fxColor = {
+export const fxColor = {
     HexToRGBA: HexToRGBA,
     RGBAtoHEX: RGBAtoHEX,
 };
-
-export default fxColor;

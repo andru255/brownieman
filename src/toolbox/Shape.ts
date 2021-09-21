@@ -28,7 +28,10 @@ export function rectangleShape(layer: Layer, gf: any) {
 }
 
 export function textShape(layer: Layer, gf: any) {
-    if (!layer.text) {
+    if (layer === undefined) {
+        return;
+    }
+    if (layer.text === undefined) {
         return;
     }
     const ctx = <CanvasRenderingContext2D>gf.ctx;

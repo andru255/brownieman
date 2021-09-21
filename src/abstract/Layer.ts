@@ -1,4 +1,5 @@
 import { GameFeatures } from '@interface/GameFeatures';
+import { Easing } from '@toolbox/FX';
 
 export default abstract class Layer {
     // position

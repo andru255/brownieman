@@ -7,7 +7,10 @@ import MazeScene from './Maze';
 
 export default class ViewportLayer extends Layer {
     fillStyle = 'orange';
-    layers: Layer[] = [new MazeScene(), new DebugScene()];
+    layers: Layer[] = [
+        //new MazeScene(),
+        new DebugScene(),
+    ];
     cellSize: number = Config.CELL_SIZE;
 
     start(gameFeatures: GameFeatures): void {
