@@ -1,15 +1,13 @@
 import Layer from '@abstract/Layer';
 import { GameFeatures } from '@interface/GameFeatures';
 import { on } from '@toolbox/EventWrapper';
-import { Easing } from '@toolbox/FX';
 import { getIt } from '@toolbox/MousePosition';
-import { imgShape, rectangleShape, textShape } from '@toolbox/Shape';
-import Timer from '@toolbox/Timer';
+import { rectangleShape, textShape } from '@toolbox/Shape';
+import Timeline from '@toolbox/Timeline';
 import Config from 'src/Config';
 
 export default class DebugScene extends Layer {
     mousePositionLbl = <Layer>{ x: 10, y: 50, width: 100, height: 100, fontSize: '20px' };
-
     keyPressBox = <Layer>{
         x: 0,
         y: 0,
@@ -19,7 +17,6 @@ export default class DebugScene extends Layer {
         strokeStyle: '#000',
         fillStyle: '#bbb',
     };
-
     keyPressBoxLbl = <Layer>{
         x: 0,
         y: 0,
@@ -29,11 +26,17 @@ export default class DebugScene extends Layer {
         fillStyle: '#ffffff00',
     };
 
-    timer = new Timer(0);
+    tlW: Timeline;
+    tlH: Timeline;
+    tlC: Timeline;
 
     keyPressStatus: { down?: boolean; up?: boolean } = { down: false, up: false };
 
     start(gameFeatures: GameFeatures): void {
+        this.tlW = new Timeline(gameFeatures);
+        this.tlH = new Timeline(gameFeatures);
+        this.tlC = new Timeline(gameFeatures);
+
         this.keyPressBoxLbl.text = '';
         this.mousePositionLbl.text = this.showMousePositionText();
         on(document, 'mousemove', (evt) => {
@@ -53,11 +56,18 @@ export default class DebugScene extends Layer {
 
     update(gameFeatures: GameFeatures): void {
         if (this.keyPressStatus.down) {
+            this.tlW.reset();
+            this.tlH.reset();
+            this.tlC.reset();
             this.animKeyEvt(gameFeatures, 'DOWN');
         }
         if (this.keyPressStatus.up) {
+            this.tlW.reset();
+            this.tlH.reset();
+            this.tlC.reset();
             this.animKeyEvt(gameFeatures, 'UP');
         }
+        //gameFeatures.viewport.switchScene(gameFeatures, 'maze', 0.5);
         this.centerPos(gameFeatures);
     }
 
@@ -65,6 +75,9 @@ export default class DebugScene extends Layer {
         rectangleShape(this.keyPressBox, gameFeatures);
         textShape(this.keyPressBoxLbl, gameFeatures);
         textShape(this.mousePositionLbl, gameFeatures);
+        this.tlW?.play();
+        this.tlH?.play();
+        this.tlC?.play();
     }
 
     private showMousePositionText(x = 0, y = 0): string {
@@ -92,10 +105,16 @@ export default class DebugScene extends Layer {
             target = { width: Config.UNIT * 5, height: Config.UNIT * 5 };
             duration = 20 / 100;
             colorDuration = 10 / 100;
-            colorTarget = '#ffffff00';
+            colorTarget = '#ffffff';
         }
-        this.timer.animLayer(step, this.keyPressBox, 'width', target.width, duration);
-        this.timer.animLayer(step, this.keyPressBox, 'height', target.height, duration);
-        this.timer.animLayer(step, this.keyPressBoxLbl, 'fillStyle', colorTarget, colorDuration);
+        this.tlW.add({ id: '0', layer: this.keyPressBox, property: 'width', target: target.width, duration });
+        this.tlH.add({ id: '0', layer: this.keyPressBox, property: 'height', target: target.height, duration });
+        this.tlC.add({
+            id: '0',
+            layer: this.keyPressBoxLbl,
+            property: 'fillStyle',
+            target: colorTarget,
+            duration: colorDuration,
+        });
     }
 }

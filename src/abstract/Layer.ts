@@ -1,6 +1,4 @@
 import { GameFeatures } from '@interface/GameFeatures';
-import { Easing } from '@toolbox/FX';
-
 export default abstract class Layer {
     // position
     x: number = 0;
@@ -36,6 +34,7 @@ export default abstract class Layer {
     //data shared
     shared?: any = {};
     // visibility
+    globalAlpha: number = 1;
     isHidden?: boolean = false;
 
     abstract start?(gameFeatures: GameFeatures): void;
