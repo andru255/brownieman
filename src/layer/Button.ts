@@ -7,7 +7,7 @@ import Config from 'src/Config';
 
 export default class ButtonLayer extends Layer {
     id: string;
-    label = <Layer>{ fillStyle: '#00416d', font: `${Config.UNIT * 3}px Arial, sans-serif` };
+    label = <Layer>{ fillStyle: '#00416d', fontSize: `${Config.UNIT * 3}px` };
     icon = <Layer>{ fillStyle: '#00416d' };
     fillStyle = '#f00';
     events = {};

@@ -26,11 +26,6 @@ const HexToRGBA = (hexValue: string): LiteralRGBA => {
     let color = hexValue.substring(1).split('');
     let alpha = 1;
     const getWithHexPrefix = (value: string) => `0x${value}`;
-    //const getRGBATplStr = (hexColor, alphaValue) => {
-    //  return `rgba(${(hexColor >> 16) & 255}, ${(hexColor >> 8) & 255}, ${
-    //    hexColor & 255
-    //  }, ${alphaValue})`;
-    //};
     const getRGBATplOBJ = (hexColor, alphaValue): LiteralRGBA => {
         return {
             red: (hexColor >> 16) & 255,
@@ -42,25 +37,16 @@ const HexToRGBA = (hexValue: string): LiteralRGBA => {
 
     if (color.length == 3) {
         color = [color[0], color[0], color[1], color[1], color[2], color[2]];
-        //if (format == HexToRGBAOutput.STRING) {
-        //  return getRGBATplStr(getWithHexPrefix(color.join("")), alpha);
-        //}
         return getRGBATplOBJ(getWithHexPrefix(color.join('')), alpha);
     }
 
     if (color.length == 6) {
-        //if (format == HexToRGBAOutput.STRING) {
-        //  return getRGBATplStr(getWithHexPrefix(color.join("")), alpha);
-        //}
         return getRGBATplOBJ(getWithHexPrefix(color.join('')), alpha);
     }
 
     let _color = getWithHexPrefix(color.join(''));
     const _alpha = parseInt(getWithHexPrefix(_color.substring(8, 10))) / 255;
     _color = _color.substring(0, 8);
-    //if (format == HexToRGBAOutput.STRING) {
-    //  return getRGBATplStr(_color, _alpha);
-    //}
     return getRGBATplOBJ(_color, _alpha);
 };
 

@@ -3,20 +3,21 @@ import { Easing, fxColor, linearColor } from './FX';
 
 export default class Timer {
     private value: any;
-    private isEnded = false;
 
     constructor(value: any) {
         this.value = value;
     }
 
     animLayer(dt, layer: Layer, key, target: any, duration: number, cb?: () => void) {
-        layer[key] = Easing.linear(dt, layer[key], target, duration);
         if (key === 'fillStyle') {
             const literalRGBA = fxColor.HexToRGBA(layer[key]);
-            layer[key] = literalRGBA;
-            layer[key] = linearColor(dt, layer[key], target, duration);
+            const targetLiteralRGBA = fxColor.HexToRGBA(target);
+            const literalRGBAResult = linearColor(dt, literalRGBA, targetLiteralRGBA, duration);
+            layer[key] = fxColor.RGBAtoHEX(literalRGBAResult);
+            return;
         }
-        if (layer[key] == target) {
+        layer[key] = Easing.linear(dt, layer[key], target, duration);
+        if (Math.ceil(layer[key]) == target) {
             cb && cb();
         }
     }

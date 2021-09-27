@@ -37,7 +37,7 @@ export function textShape(layer: Layer, gf: any) {
     const ctx = <CanvasRenderingContext2D>gf.ctx;
     ctx.save();
     ctx.beginPath();
-    ctx.font = layer.font;
+    ctx.font = `${layer.fontSize || '60px'} ${layer.fontFamily || 'Arial, sans-serif'}`;
     ctx.strokeStyle = layer.strokeStyle;
     ctx.fillStyle = layer.fillStyle;
     ctx.fillText(layer.text, layer.x, layer.y);
