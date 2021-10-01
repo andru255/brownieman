@@ -3,6 +3,7 @@ import Layer from '@abstract/Layer';
 export function rectangleShape(layer: Layer, gf: any) {
     const ctx = <CanvasRenderingContext2D>gf.ctx;
     ctx.save();
+    ctx.globalAlpha = layer.globalAlpha;
     ctx.filter = layer.filter;
     ctx.fillStyle = layer.fillStyle;
     let ts = { x: layer.x, y: layer.y };
