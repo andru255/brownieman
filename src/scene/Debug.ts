@@ -29,6 +29,7 @@ export default class DebugScene extends Layer {
     tlW: Timeline;
     tlH: Timeline;
     tlC: Timeline;
+    tlI: Timeline;
 
     keyPressStatus: { down?: boolean; up?: boolean } = { down: false, up: false };
 
@@ -36,6 +37,7 @@ export default class DebugScene extends Layer {
         this.tlW = new Timeline(gameFeatures);
         this.tlH = new Timeline(gameFeatures);
         this.tlC = new Timeline(gameFeatures);
+        this.tlI = new Timeline(gameFeatures);
 
         this.keyPressBoxLbl.text = '';
         this.mousePositionLbl.text = this.showMousePositionText();
@@ -67,7 +69,9 @@ export default class DebugScene extends Layer {
             this.tlC.reset();
             this.animKeyEvt(gameFeatures, 'UP');
         }
-
+        this.tlI.interval(() => {
+            console.log('each 0.5 secs');
+        }, 0.5);
         //gameFeatures.viewport.switchScene(gameFeatures, 'maze', 0.2);
         this.centerPos(gameFeatures);
     }
@@ -79,6 +83,7 @@ export default class DebugScene extends Layer {
         this.tlW.play();
         this.tlH.play();
         this.tlC.play();
+        this.tlI.play();
     }
 
     private showMousePositionText(x = 0, y = 0): string {

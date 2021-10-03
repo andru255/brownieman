@@ -13,6 +13,13 @@ export default class Game {
         this.canvas = <HTMLCanvasElement>document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
         this.mainLayer = mainLayer;
+
+        window.addEventListener('focus', () => {
+            this.resume();
+        });
+        window.addEventListener('blur', () => {
+            this.pause();
+        });
     }
 
     getFeatures(): GameFeatures {
@@ -38,10 +45,10 @@ export default class Game {
     }
 
     loop() {
+        requestAnimationFrame(this.loop.bind(this));
         if (this.isPaused) {
             return;
         }
-        requestAnimationFrame(this.loop.bind(this));
         this.mainLayer.update(this.getFeatures());
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.mainLayer.render(this.getFeatures());
