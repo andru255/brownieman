@@ -14,7 +14,7 @@ export default class Timeline {
     private evts: any = {};
 
     constructor(gameFeatures: GameFeatures) {
-        this.dt = gameFeatures.step;
+        this.dt = gameFeatures.dt;
     }
 
     animLayer(layer: Layer, key, target: any, duration: number) {

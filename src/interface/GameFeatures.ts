@@ -8,7 +8,7 @@ export interface GameFeatures {
     viewport?: ViewportLayer;
     padMobile?: padMobileLayer;
     ctx?: CanvasRenderingContext2D;
-    on?: () => void;
-    off?: () => void;
+    resume?: () => void;
+    pause?: () => void;
     isMob?: () => boolean;
 }

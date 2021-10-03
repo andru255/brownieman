@@ -67,7 +67,8 @@ export default class DebugScene extends Layer {
             this.tlC.reset();
             this.animKeyEvt(gameFeatures, 'UP');
         }
-        //gameFeatures.viewport.switchScene(gameFeatures, 'maze', 0.5);
+
+        //gameFeatures.viewport.switchScene(gameFeatures, 'maze', 0.2);
         this.centerPos(gameFeatures);
     }
 
@@ -75,9 +76,9 @@ export default class DebugScene extends Layer {
         rectangleShape(this.keyPressBox, gameFeatures);
         textShape(this.keyPressBoxLbl, gameFeatures);
         textShape(this.mousePositionLbl, gameFeatures);
-        this.tlW?.play();
-        this.tlH?.play();
-        this.tlC?.play();
+        this.tlW.play();
+        this.tlH.play();
+        this.tlC.play();
     }
 
     private showMousePositionText(x = 0, y = 0): string {
