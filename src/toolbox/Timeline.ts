@@ -65,6 +65,21 @@ export default class Timeline {
         });
     }
 
+    interval(cb: () => void, time: number) {
+        let value = 0;
+        this.tasks.push({
+            init: () => {
+                value = Easing.linear(this.dt, value, time, time);
+                if (value == time) {
+                    cb();
+                    this.tasks.shift();
+                    this.interval(cb, time);
+                    this.play();
+                }
+            },
+        });
+    }
+
     once(event: string, cb: () => void) {
         if (this.evts[event] !== undefined) {
             return;
