@@ -5,16 +5,9 @@ export default class Game {
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
     mainLayer: Layer;
-    isOff: Boolean = false;
-    draw: () => void;
+    isPaused = false;
     //animation vars
-    animLoop: number;
-    accumulator: number = 0;
-    delta: number = 1e3 / 60;
-    step: number = 1 / 60;
-    last: number = 0;
-    now: number;
-    dt: number = 0;
+    dt: number = 1 / 60;
 
     constructor(canvasId: string, mainLayer: Layer) {
         this.canvas = <HTMLCanvasElement>document.getElementById(canvasId);
@@ -22,48 +15,44 @@ export default class Game {
         this.mainLayer = mainLayer;
     }
 
-    getFeatures() {
+    getFeatures(): GameFeatures {
         return {
-            dt: this.accumulator,
-            step: this.step,
+            dt: this.dt,
             canvas: this.canvas,
             ctx: this.ctx,
-            on: () => this.on(),
-            off: () => this.off(),
-            isMob: () => this.isMob(),
+            resume: () => {
+                this.resume();
+            },
+            pause: () => {
+                this.pause();
+            },
+            isMob: () => {
+                return this.isMob();
+            },
         };
     }
 
     setup() {
-        this.draw = () => {
-            this.animLoop = window.requestAnimationFrame(this.draw);
-            this.now = performance.now();
-            this.dt = this.now - this.last;
-            this.last = this.now;
-            if (this.dt > 1e3) {
-                return;
-            }
-            this.accumulator += this.dt;
-            while (this.accumulator >= this.delta) {
-                this.mainLayer.update(this.getFeatures());
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                this.mainLayer.render(this.getFeatures());
-                this.accumulator -= this.delta;
-            }
-        };
         this.mainLayer.start(this.getFeatures());
+        this.loop();
     }
 
-    on() {
-        if (this.isOff) {
-            this.isOff = false;
+    loop() {
+        if (this.isPaused) {
+            return;
         }
-        this.draw();
+        requestAnimationFrame(this.loop.bind(this));
+        this.mainLayer.update(this.getFeatures());
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.mainLayer.render(this.getFeatures());
     }
 
-    off() {
-        this.isOff = true;
-        window.cancelAnimationFrame(this.animLoop);
+    resume() {
+        this.isPaused = false;
+    }
+
+    pause() {
+        this.isPaused = true;
     }
 
     isMob(): boolean {

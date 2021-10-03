@@ -13,7 +13,7 @@ export default class MainLayer extends Layer {
     paddleMobile = new padMobileLayer();
 
     start(gameFeatures: GameFeatures): void {
-        gameFeatures.on();
+        gameFeatures.resume();
         if (gameFeatures.isMob()) {
             this.paddleMobile.start(gameFeatures);
         }

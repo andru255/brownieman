@@ -56,8 +56,6 @@ export default class ViewportLayer extends Layer {
         });
     }
 
-    private startChildrenScenes(gameFeatures) {}
-
     private resize(gameFeatures: GameFeatures) {
         return {
             height: Config.HEIGHT,
