@@ -5,13 +5,15 @@ import Timeline from '@toolbox/Timeline';
 import Config from 'src/Config';
 import DebugScene from './Debug';
 import MazeScene from './Maze';
+import MenuScene from './Menu';
 import TransitionScene from './Transition';
 
 export default class ViewportLayer extends Layer {
     fillStyle = '#f00';
     layers: { id: string; scene: Layer; active: boolean }[] = [
+        { id: 'menu', scene: new MenuScene(), active: true },
         { id: 'maze', scene: new MazeScene(), active: false },
-        { id: 'debug', scene: new DebugScene(), active: true },
+        { id: 'debug', scene: new DebugScene(), active: false },
     ];
     transitionScene = new TransitionScene();
     cellSize: number = Config.CELL_SIZE;
@@ -23,7 +25,6 @@ export default class ViewportLayer extends Layer {
         this.x = x;
         this.cellSize = cellSize;
         this.layers.forEach((l, i) => l.active && l.scene.start(gameFeatures));
-        this.transitionScene.start(gameFeatures);
     }
 
     update(gameFeatures: GameFeatures): void {
@@ -43,6 +44,7 @@ export default class ViewportLayer extends Layer {
     }
 
     switchScene(gameFeatures: GameFeatures, sceneId, duration) {
+        this.transitionScene.start(gameFeatures);
         this.transitionScene.animate(gameFeatures, duration, () => {
             this.layers = this.layers.map((layer) => {
                 layer.active = false;
@@ -51,8 +53,8 @@ export default class ViewportLayer extends Layer {
                 }
                 return layer;
             });
+            console.log('layers', this.layers);
             this.layers.forEach((l, i) => l.active && l.scene.start(gameFeatures));
-            console.log('change scene here :D', this.layers);
         });
     }
 
