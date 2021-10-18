@@ -34,7 +34,9 @@ export default class MenuScene extends Layer {
         this.startBtn.label.fontSize = `${this.U * 3}px`;
         this.startBtn.label.text = 'START';
         this.startBtn.on('click', (evt) => {
-            gameFeatures.viewport.switchScene(gameFeatures, 'maze', 0.15);
+            if (!this.isHidden) {
+                gameFeatures.viewport.switchScene(gameFeatures, 'maze', 0.15);
+            }
         });
         this.startBtn.start(gameFeatures);
     }

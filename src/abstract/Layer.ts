@@ -56,4 +56,12 @@ export default abstract class Layer {
         }
         this.isHidden = true;
     }
+
+    hide?(): void {
+        this.isHidden = true;
+    }
+
+    show?(): void {
+        this.isHidden = false;
+    }
 }
