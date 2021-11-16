@@ -4,6 +4,7 @@ import BombLayer from '@layer/Bomb';
 import GridLayer from '@layer/Grid';
 import HudLayer from '@layer/HUD';
 import PlayerLayer from '@layer/Player';
+import { KeyName, on } from '@toolbox/EventWrapper';
 import Config from 'src/Config';
 export default class MazeScene extends Layer {
     hud = new HudLayer();
@@ -16,6 +17,11 @@ export default class MazeScene extends Layer {
         this.hud.start(gameFeatures);
         this.grid.start(gameFeatures);
         this.player.start(gameFeatures);
+        on(document, 'keyup.maze', (evt) => {
+            if (!this.isHidden && evt.keyCode === KeyName.ESC) {
+                gameFeatures.viewport.switchScene(gameFeatures, 'menu', 0.2);
+            }
+        });
     }
 
     update(gameFeatures: GameFeatures): void {

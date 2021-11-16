@@ -28,7 +28,6 @@ export default class PlayerLayer extends Layer {
         const cb = (evt) => {
             this.isKeyPressed = true;
             this.direction = undefined;
-            console.log('evt.keyCode', evt.keyCode);
             if (evt.keyCode == KeyName.ARROW_RIGHT) {
                 this.direction = KeyName.ARROW_RIGHT;
             }

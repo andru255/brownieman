@@ -34,7 +34,7 @@ export default abstract class Layer {
     //data shared
     shared?: any = {};
     // visibility
-    globalAlpha: number = 1;
+    globalAlpha?: number = 1;
     isHidden?: boolean = false;
 
     abstract start?(gameFeatures: GameFeatures): void;
@@ -55,5 +55,13 @@ export default abstract class Layer {
             return;
         }
         this.isHidden = true;
+    }
+
+    hide?(): void {
+        this.isHidden = true;
+    }
+
+    show?(): void {
+        this.isHidden = false;
     }
 }
